@@ -11,7 +11,6 @@
   <!-- Font Awesome (for icons) -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <!-- CSS (inline) -->
   <style>
     * {
       box-sizing: border-box;
@@ -20,13 +19,12 @@
 
     body {
       margin: 0;
-      padding: 0;
+      padding: 20px;
       background: linear-gradient(135deg, #3b82f6, #9333ea);
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: flex-start;
-      padding: 20px;
     }
 
     .container {
@@ -34,9 +32,8 @@
       max-width: 800px;
     }
 
-    /* Header with background image */
     .header {
-      background: url("https://images.unsplash.com/photo-1519183071298-a2962be96c56?auto=format&fit=crop&w=1200&q=80") center/cover no-repeat;
+      background: url("images/dried-flower-window-shadow.jpg") center/cover no-repeat;
       color: white;
       text-align: center;
       padding: 60px 20px;
@@ -48,6 +45,7 @@
     .header h1 {
       font-size: 32px;
       text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
+      margin: 0;
     }
 
     .status {
@@ -90,7 +88,6 @@
       color: #333;
     }
 
-    /* Different colors for forms */
     #signOutForm {
       border-left: 6px solid #f59e0b;
     }
@@ -99,7 +96,7 @@
       border-left: 6px solid #10b981;
     }
 
-    input {
+    select, input {
       width: 100%;
       padding: 10px;
       margin: 8px 0;
@@ -161,14 +158,46 @@
     <!-- Sign Out Form -->
     <div id="signOutForm" class="card">
       <h2><i class="fa-solid fa-user-minus"></i> Sign Out</h2>
-      <input type="text" id="signOutName" placeholder="Enter your name">
+      <select id="signOutName">
+        <option value="">-- Select your name --</option>
+        <option>Sam Z</option>
+        <option>Divine</option>
+        <option>Paola</option>
+        <option>Soa</option>
+        <option>Kizza</option>
+        <option>Shevaun</option>
+        <option>Maya</option>
+        <option>Adina</option>
+        <option>Ganza</option>
+        <option>Cungu</option>
+        <option>Sheja</option>
+        <option>Nasi</option>
+        <option>Kris</option>
+        <option>Cristiano</option>
+      </select>
       <button onclick="signOutCamera()">Sign Out Camera</button>
     </div>
 
     <!-- Sign In Form -->
     <div id="signInForm" class="card hidden">
       <h2><i class="fa-solid fa-user-check"></i> Sign In</h2>
-      <input type="text" id="signInName" placeholder="Enter your name">
+      <select id="signInName">
+        <option value="">-- Select your name --</option>
+        <option>Sam Z</option>
+        <option>Divine</option>
+        <option>Paola</option>
+        <option>Soa</option>
+        <option>Kizza</option>
+        <option>Shevaun</option>
+        <option>Maya</option>
+        <option>Adina</option>
+        <option>Ganza</option>
+        <option>Cungu</option>
+        <option>Sheja</option>
+        <option>Nasi</option>
+        <option>Kris</option>
+        <option>Cristiano</option>
+      </select>
       <input type="text" id="signInPasscode" placeholder="Enter passcode">
       <button onclick="signInCamera()">Sign In Camera</button>
     </div>
@@ -190,32 +219,28 @@
     </div>
   </div>
 
-  <!-- JavaScript (inline) -->
   <script>
     let currentUser = null;
     let currentPasscode = null;
 
     function signOutCamera() {
-      const name = document.getElementById("signOutName").value.trim();
+      const name = document.getElementById("signOutName").value;
       if (!name) {
-        alert("Please enter your name.");
+        alert("Please select your name.");
         return;
       }
 
       currentUser = name;
-      currentPasscode = name.toLowerCase() + "1";
+      currentPasscode = name.toLowerCase().replace(/\s+/g, '') + "1";
 
       const now = new Date().toLocaleString();
 
-      // Update status
       document.getElementById("statusBanner").textContent = `❌ Camera signed out by ${currentUser}`;
       document.getElementById("statusBanner").className = "status unavailable";
 
-      // Hide/Show forms
       document.getElementById("signOutForm").classList.add("hidden");
       document.getElementById("signInForm").classList.remove("hidden");
 
-      // Add log entry
       const logTable = document.getElementById("logTable");
       const row = document.createElement("tr");
       row.innerHTML = `
@@ -226,12 +251,11 @@
       `;
       logTable.appendChild(row);
 
-      // Clear input
       document.getElementById("signOutName").value = "";
     }
 
     function signInCamera() {
-      const name = document.getElementById("signInName").value.trim();
+      const name = document.getElementById("signInName").value;
       const passcode = document.getElementById("signInPasscode").value.trim();
 
       if (name !== currentUser) {
@@ -245,26 +269,20 @@
 
       const now = new Date().toLocaleString();
 
-      // Update status
       document.getElementById("statusBanner").textContent = "✅ Camera is Available";
       document.getElementById("statusBanner").className = "status available";
 
-      // Hide/Show forms
       document.getElementById("signOutForm").classList.remove("hidden");
       document.getElementById("signInForm").classList.add("hidden");
 
-      // Update log (last row signed in)
-      const logTable = document.getElementById("logTable");
-      const lastRow = logTable.lastElementChild;
+      const lastRow = document.getElementById("logTable").lastElementChild;
       if (lastRow) {
         lastRow.cells[3].textContent = now;
       }
 
-      // Reset
       currentUser = null;
       currentPasscode = null;
 
-      // Clear inputs
       document.getElementById("signInName").value = "";
       document.getElementById("signInPasscode").value = "";
     }
