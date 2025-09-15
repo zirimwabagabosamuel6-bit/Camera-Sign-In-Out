@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Camera Sign In / Sign Out</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Sign In / Sign Out</h1>
+
+    <div id="statusBox" class="status"></div>
+
+    <form id="signForm">
+      <input type="text" id="user" placeholder="Enter Your Name" required />
+      <input type="text" id="passcode" placeholder="Passcode (for sign in)" />
+      <select id="mode">
+        <option value="out">Sign Out</option>
+        <option value="in">Sign In</option>
+      </select>
+      <button type="submit">Submit</button>
+    </form>
+
+    <div id="passcodeBox" class="passcode"></div>
+
+    <table id="recordsTable">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Passcode</th>
+          <th>Signed Out</th>
+          <th>Signed In</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
