@@ -19,51 +19,84 @@
     }
 
     body {
-      background: #f3f4f6;
       margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #3b82f6, #9333ea);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
       padding: 20px;
     }
 
     .container {
-      max-width: 700px;
-      margin: auto;
+      width: 100%;
+      max-width: 800px;
     }
 
-    h1 {
+    /* Header with background image */
+    .header {
+      background: url("https://images.unsplash.com/photo-1519183071298-a2962be96c56?auto=format&fit=crop&w=1200&q=80") center/cover no-repeat;
+      color: white;
       text-align: center;
-      color: #333;
+      padding: 60px 20px;
+      border-radius: 12px;
       margin-bottom: 20px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+    }
+
+    .header h1 {
+      font-size: 32px;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
     }
 
     .status {
       text-align: center;
       padding: 12px;
-      margin-bottom: 20px;
+      margin: 20px 0;
       border-radius: 8px;
       font-weight: 600;
+      font-size: 18px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
 
     .status.available {
-      background: #d1fae5;
+      background: #bbf7d0;
       color: #065f46;
     }
 
     .status.unavailable {
-      background: #fee2e2;
+      background: #fecaca;
       color: #991b1b;
     }
 
     .card {
-      background: #fff;
+      background: white;
       padding: 20px;
       margin-bottom: 20px;
-      border-radius: 10px;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
     }
 
     .card h2 {
       margin-top: 0;
-      color: #444;
+      margin-bottom: 10px;
+      font-size: 20px;
+      color: #333;
+    }
+
+    /* Different colors for forms */
+    #signOutForm {
+      border-left: 6px solid #f59e0b;
+    }
+
+    #signInForm {
+      border-left: 6px solid #10b981;
     }
 
     input {
@@ -72,24 +105,25 @@
       margin: 8px 0;
       border: 1px solid #ccc;
       border-radius: 6px;
+      font-size: 15px;
     }
 
     button {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       border: none;
-      background: #2563eb;
+      background: linear-gradient(135deg, #2563eb, #9333ea);
       color: white;
       font-size: 16px;
       font-weight: 600;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
       margin-top: 8px;
-      transition: background 0.3s ease;
+      transition: opacity 0.3s ease;
     }
 
     button:hover {
-      background: #1e40af;
+      opacity: 0.9;
     }
 
     table {
@@ -105,7 +139,7 @@
     }
 
     th {
-      background: #f1f5f9;
+      background: #f9fafb;
     }
 
     .hidden {
@@ -115,7 +149,9 @@
 </head>
 <body>
   <div class="container">
-    <h1><i class="fa-solid fa-camera"></i> Camera Sign In/Out</h1>
+    <div class="header">
+      <h1><i class="fa-solid fa-camera"></i> Camera Sign In/Out</h1>
+    </div>
 
     <!-- Status Banner -->
     <div id="statusBanner" class="status available">
