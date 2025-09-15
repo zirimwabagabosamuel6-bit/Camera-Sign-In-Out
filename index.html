@@ -152,7 +152,7 @@
 
     <!-- Status Banner -->
     <div id="statusBanner" class="status available">
-      ✅ Camera is Available
+      ✅ Camera is Available — come to Sam Z. or Cungu for it
     </div>
 
     <!-- Sign Out Form -->
@@ -220,8 +220,38 @@
   </div>
 
   <script>
-    let currentUser = null;
-    let currentPasscode = null;
+    let currentUser = localStorage.getItem("currentUser") || null;
+    let currentPasscode = localStorage.getItem("currentPasscode") || null;
+    let logData = JSON.parse(localStorage.getItem("logData")) || [];
+
+    function updateStatus() {
+      if (currentUser) {
+        document.getElementById("statusBanner").textContent = `❌ Camera signed out by ${currentUser}`;
+        document.getElementById("statusBanner").className = "status unavailable";
+        document.getElementById("signOutForm").classList.add("hidden");
+        document.getElementById("signInForm").classList.remove("hidden");
+      } else {
+        document.getElementById("statusBanner").textContent = "✅ Camera is Available — come to Sam Z. or Cungu for it";
+        document.getElementById("statusBanner").className = "status available";
+        document.getElementById("signOutForm").classList.remove("hidden");
+        document.getElementById("signInForm").classList.add("hidden");
+      }
+    }
+
+    function renderLog() {
+      const logTable = document.getElementById("logTable");
+      logTable.innerHTML = "";
+      logData.forEach(entry => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${entry.name}</td>
+          <td>${entry.passcode}</td>
+          <td>${entry.signedOut}</td>
+          <td>${entry.signedIn || "-"}</td>
+        `;
+        logTable.appendChild(row);
+      });
+    }
 
     function signOutCamera() {
       const name = document.getElementById("signOutName").value;
@@ -230,26 +260,29 @@
         return;
       }
 
+      if (currentUser) {
+        alert(`Camera is already signed out by ${currentUser}`);
+        return;
+      }
+
       currentUser = name;
       currentPasscode = name.toLowerCase().replace(/\s+/g, '') + "1";
 
       const now = new Date().toLocaleString();
 
-      document.getElementById("statusBanner").textContent = `❌ Camera signed out by ${currentUser}`;
-      document.getElementById("statusBanner").className = "status unavailable";
+      logData.push({
+        name: currentUser,
+        passcode: currentPasscode,
+        signedOut: now,
+        signedIn: null
+      });
 
-      document.getElementById("signOutForm").classList.add("hidden");
-      document.getElementById("signInForm").classList.remove("hidden");
+      localStorage.setItem("currentUser", currentUser);
+      localStorage.setItem("currentPasscode", currentPasscode);
+      localStorage.setItem("logData", JSON.stringify(logData));
 
-      const logTable = document.getElementById("logTable");
-      const row = document.createElement("tr");
-      row.innerHTML = `
-        <td>${currentUser}</td>
-        <td>${currentPasscode}</td>
-        <td>${now}</td>
-        <td>-</td>
-      `;
-      logTable.appendChild(row);
+      updateStatus();
+      renderLog();
 
       document.getElementById("signOutName").value = "";
     }
@@ -269,23 +302,29 @@
 
       const now = new Date().toLocaleString();
 
-      document.getElementById("statusBanner").textContent = "✅ Camera is Available";
-      document.getElementById("statusBanner").className = "status available";
-
-      document.getElementById("signOutForm").classList.remove("hidden");
-      document.getElementById("signInForm").classList.add("hidden");
-
-      const lastRow = document.getElementById("logTable").lastElementChild;
-      if (lastRow) {
-        lastRow.cells[3].textContent = now;
+      // update last log entry
+      const lastEntry = logData[logData.length - 1];
+      if (lastEntry && lastEntry.name === name && !lastEntry.signedIn) {
+        lastEntry.signedIn = now;
       }
 
       currentUser = null;
       currentPasscode = null;
 
+      localStorage.removeItem("currentUser");
+      localStorage.removeItem("currentPasscode");
+      localStorage.setItem("logData", JSON.stringify(logData));
+
+      updateStatus();
+      renderLog();
+
       document.getElementById("signInName").value = "";
       document.getElementById("signInPasscode").value = "";
     }
+
+    // On page load
+    updateStatus();
+    renderLog();
   </script>
 </body>
 </html>
