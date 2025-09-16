@@ -2,329 +2,251 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Camera Sign In/Out</title>
-
-  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
-  <!-- Font Awesome (for icons) -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
   <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
-
     body {
       margin: 0;
-      padding: 20px;
-      background: linear-gradient(135deg, #3b82f6, #9333ea);
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #d4fc79, #96e6a1);
       min-height: 100vh;
       display: flex;
       justify-content: center;
-      align-items: flex-start;
+      align-items: center;
     }
 
     .container {
-      width: 100%;
-      max-width: 800px;
+      width: 90%;
+      max-width: 600px;
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
     }
 
-    .header {
-      background: url("images/dried-flower-window-shadow.jpg") center/cover no-repeat;
-      color: white;
+    h1 {
       text-align: center;
-      padding: 60px 20px;
-      border-radius: 12px;
+      font-weight: 600;
+      color: #222;
       margin-bottom: 20px;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.25);
-    }
-
-    .header h1 {
-      font-size: 32px;
-      text-shadow: 1px 1px 4px rgba(0,0,0,0.6);
-      margin: 0;
     }
 
     .status {
       text-align: center;
       padding: 12px;
-      margin: 20px 0;
-      border-radius: 8px;
-      font-weight: 600;
-      font-size: 18px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    }
-
-    .status.available {
-      background: #bbf7d0;
-      color: #065f46;
-    }
-
-    .status.unavailable {
-      background: #fecaca;
-      color: #991b1b;
-    }
-
-    .card {
-      background: white;
-      padding: 20px;
       margin-bottom: 20px;
-      border-radius: 12px;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-      transition: transform 0.2s ease;
+      font-weight: bold;
+      border-radius: 10px;
     }
 
-    .card:hover {
-      transform: translateY(-3px);
+    .available {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
     }
 
-    .card h2 {
-      margin-top: 0;
-      margin-bottom: 10px;
-      font-size: 20px;
-      color: #333;
+    .unavailable {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
     }
 
-    #signOutForm {
-      border-left: 6px solid #f59e0b;
+    form {
+      margin: 15px 0;
+      padding: 20px;
+      border-radius: 15px;
+      background: rgba(255, 255, 255, 0.4);
+      box-shadow: inset 0 2px 5px rgba(0,0,0,0.1);
     }
 
-    #signInForm {
-      border-left: 6px solid #10b981;
+    label {
+      font-weight: 600;
+      display: block;
+      margin-bottom: 6px;
     }
 
-    select, input {
+    input {
       width: 100%;
       padding: 10px;
-      margin: 8px 0;
-      border: 1px solid #ccc;
-      border-radius: 6px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       font-size: 15px;
     }
 
     button {
+      display: inline-block;
       width: 100%;
       padding: 12px;
-      border: none;
-      background: linear-gradient(135deg, #2563eb, #9333ea);
-      color: white;
       font-size: 16px;
-      font-weight: 600;
-      border-radius: 8px;
+      font-weight: bold;
+      color: white;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border: none;
+      border-radius: 10px;
       cursor: pointer;
-      margin-top: 8px;
-      transition: opacity 0.3s ease;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
     button:hover {
-      opacity: 0.9;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
+    .history {
+      margin-top: 25px;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 12px;
     }
 
-    th, td {
-      padding: 10px;
-      border-bottom: 1px solid #ddd;
+    .history h3 {
+      margin-top: 0;
       text-align: center;
+      font-weight: 600;
     }
 
-    th {
-      background: #f9fafb;
-    }
-
-    .hidden {
-      display: none;
+    .log div {
+      background: white;
+      padding: 8px 12px;
+      margin: 6px 0;
+      border-radius: 8px;
+      font-size: 14px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="header">
-      <h1><i class="fa-solid fa-camera"></i> Camera Sign In/Out</h1>
-    </div>
-
-    <!-- Status Banner -->
-    <div id="statusBanner" class="status available">
-      ✅ Camera is Available — come to Sam Z. or Cungu for it
+    <h1>📷 Camera Sign In/Out</h1>
+    <div id="status" class="status available">
+      Camera is available. Come to Sam Z or Cungu for it.
     </div>
 
     <!-- Sign Out Form -->
-    <div id="signOutForm" class="card">
-      <h2><i class="fa-solid fa-user-minus"></i> Sign Out</h2>
-      <select id="signOutName">
-        <option value="">-- Select your name --</option>
-        <option>Sam Z</option>
-        <option>Divine</option>
-        <option>Paola</option>
-        <option>Soa</option>
-        <option>Kizza</option>
-        <option>Shevaun</option>
-        <option>Maya</option>
-        <option>Adina</option>
-        <option>Ganza</option>
-        <option>Cungu</option>
-        <option>Sheja</option>
-        <option>Nasi</option>
-        <option>Kris</option>
-        <option>Cristiano</option>
-      </select>
-      <button onclick="signOutCamera()">Sign Out Camera</button>
-    </div>
+    <form id="signOutForm">
+      <label for="signOutName">Sign Out - Your Name</label>
+      <input type="text" id="signOutName" required>
+      <button type="submit">Sign Out Camera</button>
+    </form>
 
     <!-- Sign In Form -->
-    <div id="signInForm" class="card hidden">
-      <h2><i class="fa-solid fa-user-check"></i> Sign In</h2>
-      <select id="signInName">
-        <option value="">-- Select your name --</option>
-        <option>Sam Z</option>
-        <option>Divine</option>
-        <option>Paola</option>
-        <option>Soa</option>
-        <option>Kizza</option>
-        <option>Shevaun</option>
-        <option>Maya</option>
-        <option>Adina</option>
-        <option>Ganza</option>
-        <option>Cungu</option>
-        <option>Sheja</option>
-        <option>Nasi</option>
-        <option>Kris</option>
-        <option>Cristiano</option>
-      </select>
-      <input type="text" id="signInPasscode" placeholder="Enter passcode">
-      <button onclick="signInCamera()">Sign In Camera</button>
-    </div>
+    <form id="signInForm" style="display:none;">
+      <label for="signInName">Sign In - Your Name</label>
+      <input type="text" id="signInName" required>
+      <label for="signInCode">Your Passcode</label>
+      <input type="text" id="signInCode" required>
+      <button type="submit">Sign In Camera</button>
+    </form>
 
-    <!-- Record Table -->
-    <div class="card">
-      <h2><i class="fa-solid fa-list"></i> Camera Usage Log</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Passcode</th>
-            <th>Signed Out</th>
-            <th>Signed In</th>
-          </tr>
-        </thead>
-        <tbody id="logTable"></tbody>
-      </table>
+    <!-- History -->
+    <div class="history">
+      <h3>📜 History</h3>
+      <div id="log" class="log"></div>
     </div>
   </div>
 
   <script>
-    let currentUser = localStorage.getItem("currentUser") || null;
-    let currentPasscode = localStorage.getItem("currentPasscode") || null;
-    let logData = JSON.parse(localStorage.getItem("logData")) || [];
+    const statusDiv = document.getElementById("status");
+    const signOutForm = document.getElementById("signOutForm");
+    const signInForm = document.getElementById("signInForm");
+    const logDiv = document.getElementById("log");
 
-    function updateStatus() {
-      if (currentUser) {
-        document.getElementById("statusBanner").textContent = `❌ Camera signed out by ${currentUser}`;
-        document.getElementById("statusBanner").className = "status unavailable";
-        document.getElementById("signOutForm").classList.add("hidden");
-        document.getElementById("signInForm").classList.remove("hidden");
+    // Load state from localStorage
+    let cameraState = JSON.parse(localStorage.getItem("cameraState")) || {
+      available: true,
+      holder: null,
+      passcode: null,
+      history: []
+    };
+
+    // Update UI
+    function updateUI() {
+      if (cameraState.available) {
+        statusDiv.textContent = "Camera is available. Come to Sam Z or Cungu for it.";
+        statusDiv.className = "status available";
+        signOutForm.style.display = "block";
+        signInForm.style.display = "none";
       } else {
-        document.getElementById("statusBanner").textContent = "✅ Camera is Available — come to Sam Z. or Cungu for it";
-        document.getElementById("statusBanner").className = "status available";
-        document.getElementById("signOutForm").classList.remove("hidden");
-        document.getElementById("signInForm").classList.add("hidden");
+        statusDiv.textContent = `Camera is with ${cameraState.holder}.`;
+        statusDiv.className = "status unavailable";
+        signOutForm.style.display = "none";
+        signInForm.style.display = "block";
       }
+      renderHistory();
     }
 
-    function renderLog() {
-      const logTable = document.getElementById("logTable");
-      logTable.innerHTML = "";
-      logData.forEach(entry => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${entry.name}</td>
-          <td>${entry.passcode}</td>
-          <td>${entry.signedOut}</td>
-          <td>${entry.signedIn || "-"}</td>
-        `;
-        logTable.appendChild(row);
-      });
+    // Render history
+    function renderHistory() {
+      logDiv.innerHTML = cameraState.history
+        .map(entry => `<div>${entry}</div>`)
+        .join("");
     }
 
-    function signOutCamera() {
-      const name = document.getElementById("signOutName").value;
-      if (!name) {
-        alert("Please select your name.");
-        return;
-      }
-
-      if (currentUser) {
-        alert(`Camera is already signed out by ${currentUser}`);
-        return;
-      }
-
-      currentUser = name;
-      currentPasscode = name.toLowerCase().replace(/\s+/g, '') + "1";
-
-      const now = new Date().toLocaleString();
-
-      logData.push({
-        name: currentUser,
-        passcode: currentPasscode,
-        signedOut: now,
-        signedIn: null
-      });
-
-      localStorage.setItem("currentUser", currentUser);
-      localStorage.setItem("currentPasscode", currentPasscode);
-      localStorage.setItem("logData", JSON.stringify(logData));
-
-      updateStatus();
-      renderLog();
-
-      document.getElementById("signOutName").value = "";
+    // Generate passcode
+    function generatePasscode(name) {
+      const randomNum = Math.floor(Math.random() * 90 + 10);
+      return name + randomNum;
     }
 
-    function signInCamera() {
-      const name = document.getElementById("signInName").value;
-      const passcode = document.getElementById("signInPasscode").value.trim();
-
-      if (name !== currentUser) {
-        alert("You are not the one who signed out the camera!");
+    // Sign out
+    signOutForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const name = document.getElementById("signOutName").value.trim();
+      if (!cameraState.available) {
+        alert("Camera is already signed out!");
         return;
       }
-      if (passcode !== currentPasscode) {
-        alert("Incorrect passcode!");
+      const code = generatePasscode(name);
+      cameraState = {
+        available: false,
+        holder: name,
+        passcode: code,
+        history: [
+          ...cameraState.history,
+          `${name} signed OUT at ${new Date().toLocaleString()}`
+        ]
+      };
+      localStorage.setItem("cameraState", JSON.stringify(cameraState));
+      alert(`Camera signed out by ${name}.\nYour passcode is: ${code}\n(Remember this to sign it back in!)`);
+      updateUI();
+      signOutForm.reset();
+    });
+
+    // Sign in
+    signInForm.addEventListener("submit", function(e) {
+      e.preventDefault();
+      const name = document.getElementById("signInName").value.trim();
+      const code = document.getElementById("signInCode").value.trim();
+      if (cameraState.available) {
+        alert("Camera is already available!");
         return;
       }
-
-      const now = new Date().toLocaleString();
-
-      // update last log entry
-      const lastEntry = logData[logData.length - 1];
-      if (lastEntry && lastEntry.name === name && !lastEntry.signedIn) {
-        lastEntry.signedIn = now;
+      if (name === cameraState.holder && code === cameraState.passcode) {
+        cameraState = {
+          available: true,
+          holder: null,
+          passcode: null,
+          history: [
+            ...cameraState.history,
+            `${name} signed IN at ${new Date().toLocaleString()}`
+          ]
+        };
+        localStorage.setItem("cameraState", JSON.stringify(cameraState));
+        alert(`Thank you ${name}, camera is now returned.`);
+        updateUI();
+        signInForm.reset();
+      } else {
+        alert("Wrong name or passcode!");
       }
+    });
 
-      currentUser = null;
-      currentPasscode = null;
-
-      localStorage.removeItem("currentUser");
-      localStorage.removeItem("currentPasscode");
-      localStorage.setItem("logData", JSON.stringify(logData));
-
-      updateStatus();
-      renderLog();
-
-      document.getElementById("signInName").value = "";
-      document.getElementById("signInPasscode").value = "";
-    }
-
-    // On page load
-    updateStatus();
-    renderLog();
+    // Init
+    updateUI();
   </script>
 </body>
 </html>
